@@ -22,10 +22,38 @@ function reducer(state,{type,payload}){
       }
       return {
         ...state,
-        currentOperand: `${currentOperand || ""}${payload.digit}`,
+        currentOperand: `${state.currentOperand || ""}${payload.digit}`,
+        }
+      case ACTIONS.CLEAR:
+        return {}
+      case ACTIONS.CHOOSE_OPERATION:
+        if(state.currentOperand == null && state.previousOperand == null){
+          return state
+        }
+        if(state.previousOperand == null){
+          return{
+            ...state,
+            operation: payload.operation,
+            previousOperand: state.currentOperand,
+            currentOperand: null
+
+          }
+        }
+        return{
+          ...state,
+          previousOperand: evaluate(state),
+          operation: payload.operation,
+          currentOperand:null
         }
     }
 
+}
+function evaluate({currentOperand,previousOperand,operation}){
+  const prev= parseFloat(previousOperand)
+  const current = parseFloat(currentOperand)
+  if(isNaN(prev)|| isNaN(current)){
+    reducer
+  }
 }
 function App() {
   const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer,{})
@@ -35,7 +63,7 @@ function App() {
         <div className ="previous-typed-input">{previousOperand} {operation}</div>
         <div className ="current-typed-input">{currentOperand}</div>
       </div>
-      <button className="span-two">AC</button>
+      <button className="span-two" onClick={()=> dispatch({type: ACTIONS.CLEAR})}>AC</button>
       <button >DEL</button>
       <OperationButton operation="/" dispatch={dispatch}/> 
       <DigitButton digit="1" dispatch={dispatch}/> 
