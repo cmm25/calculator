@@ -42,6 +42,7 @@ function reducer(state,{type,payload}){
           operation:null,
           currentOperand:evaluate(state)
          }
+      
       case ACTIONS.CLEAR:
         return {}
       case ACTIONS.CHOOSE_OPERATION:
