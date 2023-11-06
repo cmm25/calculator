@@ -3,5 +3,18 @@
 }
 body{
   margin: 0;
-  background: -moz-linear-gradient(to right, #f0e1ca,#b8926b );
+  background: linear-gradient(to right, #faf0e1,#97693c );
+}
+.calculator-grid{
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(4,6rem);
+  grid-template-rows: minmax(7rem, auto) repeat(5,6rem);
+}
+.span-two{
+  grid-column: span 2;
+}
+.result-output{
+  grid-column: 1/-1;
+  background-color: black;
 }
