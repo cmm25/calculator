@@ -14,7 +14,7 @@ function reducer(state,{type,payload}){
   
   switch(type){
     case ACTIONS.ADD_DIGIT:
-      if(overwrite == true){
+      if(state.overwrite == true){
         return{
           ...state,
           currentOperand: payload.digit,
@@ -30,6 +30,27 @@ function reducer(state,{type,payload}){
       return {
         ...state,
         currentOperand: `${state.currentOperand || ""}${payload.digit}`,
+        }
+      case ACTIONS.REMOVE_DIGIT:
+        if(state.overwrite){
+          return{
+            ...state,
+            currentOperand: null,
+            overwrite:false
+          }
+        }
+        if(state.currentOperand==null){
+          return state
+        }
+        if(state.currentOperand.length === 1){
+          return{
+            ...state,
+            currentOperand:null,
+          }
+        }
+        return{
+          ...state,
+          currentOperand: state.currentOperand.slice(0,-1)
         }
       case ACTIONS.EVALUATE:
          if(state.operation == null || state.currentOperand == null || state.previousOperand == null){
@@ -107,7 +128,7 @@ function App() {
         <div className ="current-typed-input">{currentOperand}</div>
       </div>
       <button className="span-two" onClick={()=> dispatch({type: ACTIONS.CLEAR})}>AC</button>
-      <button >DEL</button>
+      <button onClick={()=> dispatch({type: ACTIONS.REMOVE_DIGIT})} >DEL</button>
       <OperationButton operation="/" dispatch={dispatch}/> 
       <DigitButton digit="1" dispatch={dispatch}/> 
       <DigitButton digit="2" dispatch={dispatch}/> 
