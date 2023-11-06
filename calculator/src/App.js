@@ -1,18 +1,26 @@
-import { useReducer } from "react/cjs/react.development";
+import { useReducer } from "react";
 import "./styles.css";
+import DigitButton from "./digitbutton";
 
-function App() {
-  const ACTIONS={
+export const ACTIONS={
     ADD_DIGIT : 'add-digit',
     CLEAR : 'clear',
     REMOVE_DIGIT:'delete-digit',
     CHOOSE_OPERATION :'choose',
     EVALUATE:'evaluate'
   }
-  function reducer(state,{type,payload}){
+function reducer(state,{type,payload}){
+    switch(type){
+      case ACTIONS.ADD_DIGIT:
+        return {
+          ...state,
+          currentOperand: '${currentOperand || ""}${payload.digit}',
+        }
+    }
 
   }
-  const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer,{})
+function App() {
+   const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer,{})
   return (
     <div className="calculator-grid">
       <div className="result-output">
@@ -21,7 +29,7 @@ function App() {
       </div>
       <button className="span-two">AC</button>
       <button >DEL</button>
-      <button>/</button>
+      <DigitButton digit="/" dispatch={dispatch}/>   
       <button >1</button>
       <button >2</button>
       <button >3</button>
